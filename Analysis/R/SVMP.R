@@ -1,21 +1,21 @@
 ##
-##    (c) 2019 Guillaume Guénard
+##    (c) 2020 Guillaume Guénard
 ##        Université de Montréal, Montreal, Quebec, Canada
 ##
-##    This file is part of spectR
+##    This file is part of SVMP
 ##
-##    spectR is free software: you can redistribute it and/or modify
+##    SVMP is free software: you can redistribute it and/or modify
 ##    it under the terms of the GNU General Public License as published by
 ##    the Free Software Foundation, either version 3 of the License, or
 ##    (at your option) any later version.
 ##
-##    spectR is distributed in the hope that it will be useful,
+##    SVMP is distributed in the hope that it will be useful,
 ##    but WITHOUT ANY WARRANTY; without even the implied warranty of
 ##    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ##    GNU General Public License for more details.
 ##
 ##    You should have received a copy of the GNU General Public License
-##    along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
+##    along with SVMP.  If not, see <https://www.gnu.org/licenses/>.
 ##
 ##    R source code file
 ##

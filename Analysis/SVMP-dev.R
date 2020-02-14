@@ -1,34 +1,37 @@
 ##
-##    (c) 2019 Guillaume Guénard
+##    (c) 2020 Guillaume Guénard
 ##        Université de Montréal, Montreal, Quebec, Canada
 ##
-##    This file is part of ...
+##    This file is part of SVMP
 ##
-##    [...] is free software: you can redistribute it and/or modify
+##    SVMP is free software: you can redistribute it and/or modify
 ##    it under the terms of the GNU General Public License as published by
 ##    the Free Software Foundation, either version 3 of the License, or
 ##    (at your option) any later version.
 ##
-##    [...] is distributed in the hope that it will be useful,
+##    SVMP is distributed in the hope that it will be useful,
 ##    but WITHOUT ANY WARRANTY; without even the implied warranty of
 ##    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ##    GNU General Public License for more details.
 ##
 ##    You should have received a copy of the GNU General Public License
-##    along with Foobar.  If not, see <https://www.gnu.org/licenses/>.
+##    along with SVMP.  If not, see <https://www.gnu.org/licenses/>.
 ##
 ##    R testing and development file
 ##
-## rm(list=ls())     ## Clean the wworkspace
+## rm(list=ls())     ## Clean the workspace
 library(magrittr)
 library(sf)
 library(sp)
 compile <- function() {
-  try(dyn.unload("src/spectR.so"),silent=TRUE)
-  system("R CMD SHLIB src/spectR.c")
-  dyn.load("src/spectR.so")
-  source("R/spectR.R")
-  source("spectR-aux.R")
+  try(dyn.unload("src/SVMP.so"),silent=TRUE)
+  try(dyn.unload("src/matrix.so"),silent=TRUE)
+  system("R CMD SHLIB src/SVMP.c")
+  system("R CMD SHLIB src/matrix.c")
+  dyn.load("src/SVMP.so")
+  dyn.load("src/matrix.so")
+  source("R/SVMP.R")
+  source("SVMP-aux.R")
 }
 compile()
 ##
