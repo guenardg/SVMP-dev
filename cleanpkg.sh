@@ -1,8 +1,8 @@
 #!/bin/bash
-PKG = "SVMP-dev"
+PKG='SVMP-dev'
 rm -f *~
 rm $PKG.Rcheck.tar.gz
-tar cvzf $PKG.Rcheck.tar.gz $PKG-dev.Rcheck
+tar cvzf $PKG.Rcheck.tar.gz $PKG.Rcheck
 rm -rf $PKG.Rcheck
 rm -f $PKG/*~
 rm -f $PKG/man/*~
