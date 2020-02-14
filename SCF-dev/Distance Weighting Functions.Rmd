@@ -1,0 +1,347 @@
+---
+title: "Distance Weighting Functions for Spatial Covariance Models"
+author: "Guillaume Guénard"
+date: "31/10/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Distance weighting functions
+
+The the present study is concerned with the development of a spatial modelling
+framework. In a nutshell, its consists in:
+
+1. finding a function of the distance that is suitable to represent
+the spatial covariance,
+
+2. decompose these spatial covariance patterns as a set of eigenfunctions, and
+
+3. use these eigenfunctions with ancillary representation
+methods (e.g., linear models, generalized linear models, discriminant functions,
+articifical neural networks).
+
+Its purpose is to incorporate the information about where observations were
+taken from (i.e., the spatial information) into analytical and predictive
+models.
+
+Distance weighting functions (DWF) describe relationships between the distances,
+which are represented as matrix $\mathbf{D} = [d_{i,j}]$ of pairwise geographic
+distance between the sites (or between the obserations and a set of
+representative kernels), and their corresponding degree of association, which is
+represented as matrix $\mathbf{W}=[w_{i,j}]$. Finding a suitable DWF is at the
+basis of representing spatial patterns. The DWF is used to estimate the spatial
+covariance (matrix $\mathbf{\Sigma}$, step #1 in the list above). In the
+framework developed here, $\mathbf{W}$, obtained by applying the a DWF on
+$\mathbf{D}$ in an element-wise manner. The complete process is described
+in-length in the main text and involves centering $\mathbf{W}$ on its columns
+(i.e., the resulting transformed columns have means of $0$) and multiplying it
+by its own transpose. That last step garranties that the spatial covariance
+matrix remains positive semi-definite, which is expected by the maximum
+likelihood estimator (MLE). That estimator is, in turn, necessary to determine
+which DWF to choose from and the most adequate values for its parameters. In in
+developing the DWF, we have followed a few guidelines to help in obtaining
+well-behaved MLE. A DWF:
+
+1. has unit range on its entire domain, with the maximum weight being $1$ and
+occurring when the distance is $0$, since $w(d=0)=1$, and the minimum weight
+being $0$ and occurring when $d\geq \beta$ (i.e., $w(d\geq\beta)=0)$, where
+$\beta$ is the parameter describing the maximum influence distance;
+
+2. is continuous between $d=0$ and $d=\beta$;
+
+3. is monotonically decreasing between $d=0$ and $d=\beta$;
+
+4. converges into the same linear function $w=1-d/\beta$ when its shape
+parameter $\alpha=1$ and into a Kronecker's $\delta$ (i.e., a function giving
+the value $1$ for $d=0$ and $0$ everywhere else) when $\alpha=0$;
+
+5. is initially steep, with its first derivatives with respect to $d$ having
+values $\leq-1/\beta$ at $d=0$, which are then increasing to values
+$\leq 0$ at $d=\beta$;
+
+6. has a first derivatives with respect to $d$ that always increasing, i.e., its
+second derivative with respect to $d$ has a value $\geq 0$ between $d=0$ and
+$d=\beta$; and
+
+7. has a parameter $\alpha$, driving its shape in the $0<\alpha<1$ interval.
+
+Below, we describe five DWF. Some of them where loosely inspired by variogram
+models used in kriging, whereas others are from standard analytic geometry, with
+all the them complying with the properties enumerated above.
+
+## Spherical function
+
+We began by considering the spherical variogram model. It is a third order
+polynomial which we adapted to our framework as follows:
+$$w_{\beta}(d) = 1 - 1.5 \left(\frac{d}{\beta}\right) + 0.5\left(\frac{d}{\beta}\right)^3,$$
+where $\beta$ corresponds to the range parameter. Its first derivative (with
+respect to $d$) is $w'_{\beta}(d) = -1.5 + 1.5(d/\beta)^2$: the function's rate
+of decrease is $-1.5$ at $d=0$ and increases to $0$ at $d=\beta$ in a quadratic
+manner. To enable on to modulate that function's shape, let $a$ be the absolute
+value of the initial rate of the function, which will now read as follows:
+$$w_{a,\beta}(d) = 1 - a \left(\frac{d}{\beta}\right) + (a-1)\left(\frac{d}{\beta}\right)^{\frac{a}{a-1}}.$$
+That function, which equal the one above for $a=1.5$ would comply with above
+properties 1-3 for $a \in [-\infty,0]\cup[1,+\infty]$. Curves obtained by
+varying $a$ from $1$ to $+\infty$ are continuous with those obtained when $a$
+goes from $-\infty$ to $0$, as limits at $\pm\infty$ are identical and defined
+as follow:
+$$\lim_{a\rightarrow+\infty} w_{a,\beta}(d) = \lim_{a\rightarrow-\infty} w_{a,\beta}(d) = \left(\frac{d}{\beta}\right)\log\left(\frac{d}{\beta}\right) - \left(\frac{d}{\beta}\right) + 1.$$
+We remapped the range of $a$ into the interval $[0,1]$ by representing it as an
+rectangular hyperbolic function of $\alpha$ as follows:
+$$a=\frac{1}{2}-\frac{1}{4\alpha-2}=\frac{\alpha-1}{2\alpha-1}.$$
+The resulting function's first derivative is, by definition $-a/\beta$ at $d=0$
+and $0$ at $d=\beta$ except when $a=0$, in which case it is $-1/\beta$ for all
+$0\leq d\leq\beta$. The derivative of the function is:
+$$w'_{a,\beta}(d) = \begin{cases} \dfrac{a\left(\frac{d}{\beta}\right)^\frac{a}{a-1}}{d}-\dfrac{a}{\beta}, & \alpha\in [0,1]\not\,\,\, \lbrace 0.5 \rbrace \\ \dfrac{\log\left(\frac{d}{\beta}\right)}{\beta}, & \alpha=0.5\,\cap\, d>0 \\ 1, & \alpha=0.5\,\cap\, d=0 \end{cases}.$$
+In the particular case when $\alpha=0.25$ (i.e., $a=1.5$), the DWF corresponds to
+the spherical variogram model. However, the former has more flexibility and can
+represent a broader array of polynomial relationships.
+
+```{r,echo=FALSE}
+dst <- seq(0,5,0.01)
+f <- function(d,alpha,beta) {
+  dd <- d/beta
+  if(alpha==0.5) {
+    out <- dd * log(dd) - dd + 1
+  } else {
+    a <- 0.5 - 0.25/(0.5 - alpha)
+    n <- a / (a - 1)
+    out <- 1 - a*dd + (a - 1)*dd^n
+  }
+  out[d>beta] <- 0
+  out
+}
+par(mar=c(5,5,2,2))
+plot(y=f(dst,1,4),x=dst,type="l",ylim=c(0,1),xlab=expression(italic(d)),
+     ylab=expression(italic(w)[list(spherical,alpha,beta)](italic(d))))
+lines(y=f(dst,0.75,4),x=dst,lty=2L)
+lines(y=f(dst,0.5,4),x=dst,lty=3L)
+lines(y=f(dst,0.25,4),x=dst,lty=4L)
+lines(y=f(dst,0.1,4),x=dst,lty=5L)
+legend(x=3.5,y=1,lty=1L:5L,
+       legend=parse(text=sprintf("alpha == %0.2f",c(1,0.75,0.5,0.25,0.1))))
+```
+
+Example of the spherical DWF for different values of $\alpha$ and $\beta=4$.
+
+---
+
+## Exponential function
+
+The second function we considered was the exponential variogram function, which
+we adapted to the framework described previously as follows:
+$$w_{\beta}(d) = \dfrac{\mathrm{e}^{\frac{-3d}{\beta}}-\mathrm{e}^{-3}}{1-\mathrm{e}^{-3}}.$$
+To enable one to modulate its shape, we began by replacing the value $-3$ by a
+parameter $a$ as follows:
+$$w_{a,\beta}(d) = \dfrac{\mathrm{e}^{\frac{ad}{\beta}}-\mathrm{e}^a}{1-\mathrm{e}^a},$$
+with values of $a\in[-\infty,0]$ giving curves complying with above properties
+1-3. By posing $a=(\alpha-1)/\alpha$, we obtained the following:
+$$w_{\alpha,\beta}(d) = \dfrac{\mathrm{e}^{\frac{(\alpha-1)d}{\alpha\beta}}-\mathrm{e}^\frac{\alpha-1}{\alpha}}{1-\mathrm{e}^\frac{\alpha-1}{\alpha}},$$
+which comply with properties 5-6. The first derivative of that function with
+respect to $d$ is:
+$$w'_{\alpha,\beta}(d) = \dfrac{\left(\alpha-1\right)\mathrm{e}^\frac{\left(\alpha-1\right)d}{\alpha \beta}}{\alpha\beta\left(1-\mathrm{e}^\frac{\alpha-1}{\alpha}\right)}.$$
+That function can be used to help in interpreting DWF parameters fit to
+empirical data.
+
+```{r,echo=FALSE}
+dst <- seq(0,5,0.01)
+f <- function(d,alpha,beta) {
+  if(alpha<1) {
+        if(alpha>0) {
+          a <- (alpha-1)/alpha
+          out <- (exp(a*(d/beta)) - exp(a))/(1 - exp(a))
+        } else {
+          out <- numeric(length(d))
+          out[d==0] <- 1
+        }
+      } else {
+        out <- 1-d/beta
+      }
+      out[d>beta] <- 0
+      out
+}
+par(mar=c(5,5,2,2))
+plot(y=f(dst,1,4),x=dst,type="l",ylim=c(0,1),xlab=expression(italic(d)),
+     ylab=expression(italic(w)[list(exponential,alpha,beta)](italic(d))))
+lines(y=f(dst,0.75,4),x=dst,lty=2L)
+lines(y=f(dst,0.5,4),x=dst,lty=3L)
+lines(y=f(dst,0.25,4),x=dst,lty=4L)
+lines(y=f(dst,0.1,4),x=dst,lty=5L)
+legend(x=3.5,y=1,lty=1L:5L,
+       legend=parse(text=sprintf("alpha == %0.2f",c(1,0.75,0.5,0.25,0.1))))
+```
+
+Example of the exponential power weighting for different values of $\alpha$ and
+$\beta=4$.
+
+---
+
+We did not seek to develop DWF on the basis of the Gaussian and hole effect
+variograms models. The Gaussian variogram model has a slope that is consistently
+above $-1/\beta$ and is not adaptable to the present framework. The hole effect
+variogram model, which is based on the canonical sine function, is not
+consistently decreasing. The next weighting function were developed from general
+analytic geometric functions that are not commonly used as variogram models.
+
+## Power function
+
+We began the definitions of the third weighting function, which we called the
+«power» weighting function, by considering a simple linear function of the form
+$y = ax+b$, with $a = -\frac{1}{d_{max}}$ and $b = 1$ to comply with the
+properties mentioned previously, and raised it to the inverse of $\alpha$ as
+follows:
+
+$$w_{\alpha,\beta}(d) = \left(1-\dfrac{d}{\beta}\right)^\frac{1}{\alpha},$$
+
+with its first derivative with respect to $d$ being:
+
+$$w'_{\alpha,\beta}(d) = -\dfrac{\left(1-\frac{d}{\beta}\right)^{\frac{1}{\alpha}-1}}{\beta\alpha}.$$
+
+Value of the derivative at limit $d=0$ is thus $-\frac{1}{\beta\alpha}$ for
+all $\alpha \in ]0,1]$ whereas at limit $d=\beta$ it is $-\frac{1}{\beta}$
+whenever $\alpha=1$ and $0$ for all $\alpha \in ]0,1[$.
+
+As for all above-defined DWF, the power weighting function takes the shape of a
+straight line when $\alpha = 1$ whereas for other non-zero $a<1$ it takes the
+shape of curves starting steeply (the smaller the $\alpha$, the steeper the
+curve starts) and ending gently (the smaller the $\alpha$ the gentler the curve
+ends).
+
+```{r,echo=FALSE}
+dst <- seq(0,5,0.01)
+f <- function(d,alpha,beta) {
+  out <- (1-d/beta)^(1/alpha)
+  out[d>beta] <- 0
+  out
+}
+par(mar=c(5,5,2,2))
+plot(y=f(dst,1,4),x=dst,type="l",ylim=c(0,1),xlab=expression(italic(d)),
+     ylab=expression(italic(w)[list(power,alpha,beta)](italic(d))))
+lines(y=f(dst,0.75,4),x=dst,lty=2L)
+lines(y=f(dst,0.5,4),x=dst,lty=3L)
+lines(y=f(dst,0.25,4),x=dst,lty=4L)
+lines(y=f(dst,0.1,4),x=dst,lty=5L)
+legend(x=3.5,y=1,lty=1L:5L,
+       legend=parse(text=sprintf("alpha == %0.2f",c(1,0.75,0.5,0.25,0.1))))
+```
+
+Example of the power weighting for different values of $\alpha$ and $\beta=4$.
+
+---
+
+## Hyperbolic weighting function
+
+The fourth DWF was obtained using a rectangular hyperbola as its backbone and
+was named accordingly the «hyperbolic» weighting function. The rectangular
+hyperbola, $y = 1/x$, was horizontally offset it by one to the left to obtain a
+function taking the value $w=1$ at $d=0$ and raise it to the power $1/a$ to
+apply control over its shape. The resulting function had the following form
+$y=(x+1)^{-\frac{1}{a}}$, which, at $d=\beta$ take the value
+$(\beta+1)^{-\frac{1}{a}}$. We thus vertically offset the function downward by
+that value and scale the resulting function within the $[0,1]$ interval,
+thereby obtaining the following:
+$$w_{a,\beta}(d)= \dfrac{\left(d+1\right)^{-\frac{1}{a}}-\left(\beta+1\right)^{-\frac{1}{a}}}{1-\left(\beta+1\right)^{-\frac{1}{a}}}.$$
+Similarly as for the spherical weighting function presented earlier, the
+function is well-behaved for a disjoint interval, this time for
+$-a \in [-\infty,0]\cup[1,+\infty]$. We solve that issue in a similar manner,
+as for the spherical DWF by remapping the range of $-a$ into the interval
+$[0,1]$ by representing it as an other rectangular hyperbolic function of
+$\alpha$ as follows:
+$$a=\frac{1}{2-4\alpha}-\frac{1}{2}=\frac{\alpha}{1-2\alpha},$$
+with the resulting weighting function reading as follows:
+$$w_{\alpha,\beta}(d)= \dfrac{\left(d+1\right)^{2-\frac{1}{\alpha}}-\left(\beta+1\right)^{2-\frac{1}{\alpha}}}{1-\left(\beta+1\right)^{2-\frac{1}{\alpha}}}.$$
+For $\alpha=0.5$ (and thus $a=\pm\infty$) the function becomes:
+$$w_{\alpha=0.5,\beta}(d) = \lim_{a\rightarrow+\infty} w_{a,\beta}(d) = \lim_{a\rightarrow-\infty} w_{a,\beta}(d) = 1-\dfrac{\log(d+1)}{\log(\beta+1)}$$
+
+
+
+and with its first derivative with respect to $d$ being:
+
+$$w'_{d_\alpha,\beta}(d)=\dfrac{\left(2-\frac{1}{\alpha}\right)\left(d+1\right)^{1-\frac{1}{\alpha}}}{1-\left(\beta+1\right)^{2-\frac{1}{\alpha}}}$$
+for $\alpha\in [0,1]\not\,\,\lbrace 0.5 \rbrace$ and:
+$$w'_{d_\alpha,\beta}(d)=-\dfrac{1}{\log(\beta+1)(d+1)}$$
+for $\alpha=0.5$. The function features a steep initial slope and a gentle final
+slope, with initial steepness (and final gentleness) being more pronounced for
+small values of $\alpha$. As for the spherical and power weighting functions, it
+amounts to the linear function $w=1-d/\beta$ when $\alpha=1$.
+
+```{r,echo=FALSE}
+dst <- seq(0,5,0.01)
+f <- function(d,alpha,beta) {
+  if(alpha == 0.5) {
+    out <- 1 - log(d + 1)/log(beta + 1)
+  } else {
+    a <- 0.5 - 0.25/(0.5 - alpha)
+    out <- ((1+d)^(1/a) - (1+beta)^(1/a))/(1 - (1+beta)^(1/a))
+  }
+  out[d>beta] <- 0
+  out
+}
+par(mar=c(5,5,2,2))
+plot(y=f(dst,1,4),x=dst,type="l",ylim=c(0,1),xlab=expression(italic(d)),
+     ylab=expression(italic(w)[list(hyperbolic,alpha,beta)](italic(d))))
+lines(y=f(dst,0.75,4),x=dst,lty=2L)
+lines(y=f(dst,0.5,4),x=dst,lty=3L)
+lines(y=f(dst,0.25,4),x=dst,lty=4L)
+lines(y=f(dst,0.1,4),x=dst,lty=5L)
+legend(x=3.5,y=1,lty=1L:5L,
+       legend=parse(text=sprintf("alpha == %0.2f",c(1,0.75,0.5,0.25,0.1))))
+```
+
+Example of the hyperbolic weighting for different values of $\alpha$ and
+$\beta=4$.
+
+---
+
+## Superelliptical weighting function
+
+Finally, we called the fifth and last weighting function «superelliptical»
+weighting function as it is based on superelliptical (also known as the Lamé)
+curves, a generalization the equation of an ellipse. As such, its first
+derivative with respect to $d$ has the value $-\infty$ at $d=0$ and $0$ at
+$d=\beta$. It is defined as follows:
+$$w_{\alpha,\beta}(d) = 1-\dfrac{\left(\beta^\frac{1}{\alpha}-\left(\beta-d\right)^\frac{1}{\alpha}\right)^\alpha}{\beta}$$
+
+and corresponds exactly to the lower-left portion of a vertically-compressed
+ellipse going through point $(d=0,w=1)$ and $(d=\beta,w=0)$ when $\alpha=0.5$.
+Its first derivative with respect to $d$ is:
+
+$$w'_{\alpha,\beta}(d) = -\dfrac{\left(\beta^\frac{1}{\alpha}-\left(\beta-d\right)^\frac{1}{\alpha}\right)^{\alpha-1}\left(\beta-d\right)^{\frac{1}{\alpha}-1}}{\beta}.$$
+
+The shape of the function becomes increasingly rectangular as one decreases
+$\alpha$ from $0.5$ toward $0$ and increasingly linear as one increases $\alpha$
+from $0.5$ toward $1$. As for the spherical, hyperbolic, and power weighting
+function, the superelliptical weighting function becomes a straight line when
+$\alpha=1$.
+
+```{r,echo=FALSE}
+dst <- seq(0,5,0.01)
+f <- function(d,alpha,beta) {
+  out <- 1 - (1/beta)*(beta^(1/alpha) - (beta-d)^(1/alpha))^alpha
+  out[d>beta] <- 0
+  out
+}
+par(mar=c(5,5,2,2))
+plot(y=f(dst,1,4),x=dst,type="l",ylim=c(0,1),xlab=expression(italic(d)),
+     ylab=expression(italic(w)[list(superelliptical,alpha,beta)](italic(d))))
+lines(y=f(dst,0.75,4),x=dst,lty=2L)
+lines(y=f(dst,0.5,4),x=dst,lty=3L)
+lines(y=f(dst,0.25,4),x=dst,lty=4L)
+lines(y=f(dst,0.1,4),x=dst,lty=5L)
+legend(x=3.5,y=1,lty=1L:5L,
+       legend=parse(text=sprintf("alpha == %0.2f",c(1,0.75,0.5,0.25,0.1))))
+```
+
+Example of the superelliptical weighting for different values of $\alpha$ and
+$\beta=4$.
+
+---
+
+Although it is our hope that the five DWF presented here cover a broad array of
+possible distance-weights relationships, it is by no mean an exhaustive listing
+of all the possible relationships that can be used for modelling spatial
+covariance from among-site distances. It is also our hope that scientists supply
+any lack of a relevant function that may arise in the future.

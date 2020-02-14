@@ -5,3 +5,5 @@
 *.log
 *.RData
 *.Rhistory
+/Archive
+/Manuscript
