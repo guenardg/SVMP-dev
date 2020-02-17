@@ -1,0 +1,189 @@
+
+R version 3.6.2 (2019-12-12) -- "Dark and Stormy Night"
+Copyright (C) 2019 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "SVMP"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> base::assign(".ExTimings", "SVMP-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('SVMP')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("EuclidAB")
+> ### * EuclidAB
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: EuclidAB
+> ### Title: Calculation of the Euclidean Distance Among Two Sets of Points
+> ### Aliases: EuclidAB
+> 
+> ### ** Examples
+> 
+> ##
+> ### First example: locations spread throughout the world
+> ##
+> ## [Examples here...]
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("EuclidAB", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("geodesics")
+> ### * geodesics
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: geodesics
+> ### Title: Calculation Of Geodesic Distances
+> ### Aliases: geodesics
+> 
+> ### ** Examples
+> 
+> ##
+> ### First example: locations spread throughout the world
+> ##
+> coords <- cbind(c(43,22,9,12,-40,72,-86,-22),
++                 c(-135,22,0,1,-45,12,27,-139))
+> res_hav <- geodesics(coords)  ## Default: the haversine formula
+> res_hav
+           1          2          3          4          5          6          7
+2 10540925.5                                                                  
+3 10676283.7  2737494.7                                                       
+4 10556652.9  2474535.5   350996.2                                            
+5 10805862.5  8842939.8  6775748.5  7055044.1                                 
+6  6626582.2  5417712.0  6698215.8  6406283.3 10969966.6                      
+7 11846828.7 10309463.6  9426777.3  9645612.4  5271134.4 12510276.9           
+8  6856057.8 12591919.9 11918166.8 11995861.0  8102715.0 11421211.9  7479140.6
+> res_vif <- geodesics(coords,method = "Vincenty")
+> res_vif
+           1          2          3          4          5          6          7
+2 12433475.4                                                                  
+3 12671758.8  2758096.6                                                       
+4 12456821.4  2490846.8   349419.6                                            
+5 12882400.5  9759003.5  7130580.1  7461500.4                                 
+6  6989333.0  5594645.7  7044752.0  6706056.8 13186939.1                      
+7 15188083.4 11990654.5 10598722.0 10926947.3  5446565.5 17559911.6           
+8  7208212.4 18072004.7 15421082.6 15645655.8  8796614.7 14151829.7  8002005.7
+> attr(res_vif,"niter") ## The numbers of iterations
+ [1] 5 5 5 5 4 4 5 5 5 5 4 4 5 5 5 4 4 5 5 4 4 5 5 3 5 4 5 4
+> res_vif-res_hav       ## Absolute difference
+            1           2           3           4           5           6
+2 1892549.926                                                            
+3 1995475.093   20601.945                                                
+4 1900168.527   16311.329   -1576.537                                    
+5 2076538.022  916063.740  354831.611  406456.319                        
+6  362750.772  176933.635  346536.247  299773.478 2216972.523            
+7 3341254.661 1681190.921 1171944.722 1281334.968  175431.028 5049634.700
+8  352154.582 5480084.747 3502915.809 3649794.776  693899.675 2730617.792
+            7
+2            
+3            
+4            
+5            
+6            
+7            
+8  522865.149
+> 200*(res_vif-res_hav)/(res_vif+res_hav) ## Large relative difference
+           1          2          3          4          5          6          7
+2 16.4752929                                                                  
+3 17.0932967  0.7497626                                                       
+4 16.5135303  0.6570019 -0.4501717                                            
+5 17.5322102  9.8491187  5.1031674  5.5999045                                 
+6  5.3283347  3.2133652  5.0431064  4.5723872 18.3547724                      
+7 24.7180730 15.0778656 11.7045244 12.4567384  3.2736693 33.5856538           
+8  5.0077904 35.7428791 25.6255448 26.4080644  8.2121562 21.3554400  6.7548635
+> ##
+> ### Second example: locations nearer from one another
+> ##
+> coords <- cbind(c(45.01,44.82,45.23,44.74),
++                 c(72.03,72.34,71.89,72.45))
+> res_hav <- geodesics(coords)
+> res_vif <- geodesics(coords,method = "Vincenty")
+> res_vif-res_hav       ## Absolute difference
+           1          2          3
+2 43.6077934                      
+3  0.4681003 40.7011044           
+4 56.7066071 13.0589972 53.7659041
+> 200*(res_vif-res_hav)/(res_vif+res_hav) ## Relative difference are smaller
+            1           2           3
+2 0.134987125                        
+3 0.001745591 0.070515390            
+4 0.126826308 0.105003417 0.076713982
+> ##
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("geodesics", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("sp.cov")
+> ### * sp.cov
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: sp.cov
+> ### Title: Calculation of Spatial Covariance Models
+> ### Aliases: sp.cov
+> 
+> ### ** Examples
+> 
+> ##
+> ### First example: locations spread throughout the world
+> ##
+> ## [Examples here...]
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("sp.cov", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> cleanEx()
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.166 0.004 0.17 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

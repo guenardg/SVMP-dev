@@ -3,7 +3,7 @@
  (c) 2020 Guillaume Guénard
  Université de Montréal, Montreal, Quebec, Canada
 
- **Core functions**
+ **Accessory and core functions**
  
  This file is part of SVMP
  
@@ -24,29 +24,12 @@
 
 *************************************************************************/
 
-#ifndef __spectR_h__
+#ifndef __acc_core_h__
 
-#define __spectR_h__
+#define __acc_core_h__
 
 #include<R.h>
 #include<math.h>
-
-// MLE-friendly MEM weighting functions
-
-void scf_spher(double* d, double* alpha, double* beta,
-               int* n, int* recycle, double* res);
-void scf_expon(double* d, double* alpha, double* beta,
-               int* n, int* recycle, double* res);
-void scf_power(double* d, double* alpha, double* beta,
-               int* n, int* recycle, double* res);
-void scf_hyper(double* d, double* alpha, double* beta,
-               int* n, int* recycle, double* res);
-void scf_super(double* d, double* alpha, double* beta,
-               int* n, int* recycle, double* res);
-
-/* Ideally: n should be length 3 and contain size for d, alpha, and beta in
- * order to implement recyling more efficiently than by using a "int* recycle"
- */
 
 // Accessory functions
 void dist_Euclid(double* a, double* b, int* na, int* nb,

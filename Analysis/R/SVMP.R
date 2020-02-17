@@ -19,28 +19,6 @@
 ##
 ##    R source code file
 ##
-sp.cov <- function(d,
-                   type = c("spherical","exponential","power",
-                            "hyperbolic","superelliptic"),
-                   alpha = 1, beta = 1) {
-    storage.mode(d) <- "double"
-    type <- substr(match.arg(type),1L,5L)
-    storage.mode(alpha) <- "double"
-    storage.mode(beta) <- "double"
-    n <- length(d)
-    if(any(c(length(alpha),length(beta)) > 1L)) {
-        alpha <- rep(alpha, length.out = n)
-        beta <- rep(beta, length.out = n)
-        out <- .C(sprintf("scf_%s",type),d,alpha,beta,
-                  n,0L,double(n),NAOK=TRUE)[[6L]]
-    } else {
-        out <- .C(sprintf("scf_%s",type),d,alpha,beta,
-                  n,1L,double(n),NAOK=TRUE)[[6L]]
-    }
-    dim(out) <- dim(d)
-    return(out)
-}
-##
 ### I was thinking about a new implementation with internal recycling of the
 ### parameters but I postponed that implementation to work on more pressing
 ### issues.
@@ -60,20 +38,6 @@ sp.cov <- function(d,
 ##     return(out)
 ## }
 ##
-EuclidAB <- function(a, b, squared=FALSE) {
-    m <- NCOL(a)
-    if(m!=NCOL(b))
-        stop("'a' and 'b' must have the equal numbers of columns!")
-    storage.mode(a) <- "double"
-    storage.mode(b) <- "double"
-    na <- NROW(a)
-    nb <- NROW(b)
-    res <- .C("dist_Euclid",a,b,na,nb,m,double(na*nb),
-              as.integer(squared))[[6L]]
-    dim(res) <- c(nb,na)
-    dimnames(res) <- list(rownames(b),rownames(a))
-    return(res)
-}
 ##
 center <- function(x, row = FALSE) {
     if(!is.matrix(x))
