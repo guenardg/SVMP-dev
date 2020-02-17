@@ -4,10 +4,10 @@
 ## rm(list=ls())
 ##
 compile <- function() {
-  try(dyn.unload("src/geodesics.so"),silent=TRUE)
-  system("R CMD SHLIB src/geodesics.c")
-  dyn.load("src/geodesics.so")
-  source("R/geodesics.R")
+  try(dyn.unload("../SVMP-dev/src/geodesics.so"),silent=TRUE)
+  system("R CMD SHLIB ../SVMP-dev/src/geodesics.c")
+  dyn.load("../SVMP-dev/src/geodesics.so")
+  source("../SVMP-dev/R/geodesics.R")
 }
 compile()
 ##

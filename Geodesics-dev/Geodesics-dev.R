@@ -272,10 +272,3 @@ s <- a*cos(Lat[1L])*deltaLon
 ### modification for nearly antipodal points without success (1.25 work day
 ### wasted on that attempt.)
 ##
-
-
-
-
-
-
-

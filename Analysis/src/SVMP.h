@@ -1,7 +1,7 @@
 /*************************************************************************
  
  (c) 2020 Guillaume Guénard
- Univeersité de Montréal, Montreal, Quebec, Canada
+ Université de Montréal, Montreal, Quebec, Canada
 
  **Core functions**
  
