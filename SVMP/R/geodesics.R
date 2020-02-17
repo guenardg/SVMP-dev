@@ -94,7 +94,7 @@
 #' Inman, J. 1835. Navigation and Nautical Astronomy: For the Use of British
 #' Seamen (3 ed.). London, UK: W. Woodward, C. & J. Rivington
 #' 
-#' @example
+#' @examples
 #' ##
 #' ### First example: locations spread throughout the world
 #' ##
@@ -118,9 +118,9 @@
 #' 200*(res_vif-res_hav)/(res_vif+res_hav) ## Relative difference are smaller
 #' ##
 #' 
-#' @useDynLib geodesics, .registration = TRUE
+#' @useDynLib SVMP, .registration = TRUE
 #' 
-#' @export geodesics
+#' @export
 geodesics <- function(x, y, method=c("haversine","Vincenty"),
                       radius=6.371e6, sma=6378137.0, flat=1/298.257223563,
                       maxiter=1024L,tol=.Machine$double.eps^0.75) {

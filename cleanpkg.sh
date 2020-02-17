@@ -1,5 +1,5 @@
 #!/bin/bash
-PKG='SVMP-dev'
+PKG='SVMP'
 rm -f *~
 rm -f .*~
 rm $PKG.Rcheck.tar.gz

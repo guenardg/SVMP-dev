@@ -1,0 +1,10 @@
+e884a62e0d051a967568416e7af5cfe6  ./R/geodesics.R
+95444dfa740efbd89c06bbc3273f3078  ./.Rhistory
+8abf02f70d07cd72633e1256b8ddaa6f  ./DESCRIPTION
+ea7c581e73573eb3e7492b8bdf5f6f29  ./NAMESPACE
+126a0caf67f00ab80e533f7fe643983d  ./man/geodesics.Rd
+74358855430b644b947dcdb25902b8d0  ./src/matrix.c
+50ca1cde9b411f294a7073fff66854e7  ./src/init.c
+f8b079db09f69017de1a4d99b1718cd9  ./src/geodesics.c
+7b335fb3ffce453fe2ff9cefbaa2bb76  ./src/geodesics.h
+25fbbb0adbb6c3a7dca613e2eff1cfe5  ./src/matrix.h
