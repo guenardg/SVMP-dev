@@ -7,10 +7,13 @@ e884a62e0d051a967568416e7af5cfe6  ./R/geodesics.R
 9c4f6568987a4a5917a1a051a9486ebb  ./man/sp.cov.Rd
 7b93af52cec13460b06cfb59cedeb21a  ./man/EuclidAB.Rd
 74358855430b644b947dcdb25902b8d0  ./src/matrix.c
-896d93cfa4b61aa4177c7948f4ba0524  ./src/init.c
+36fe608dcc625e43c51af68839b98157  ./src/init.c
 ee6dd567e43b97f19d61d86d29c3b713  ./src/scf.h
 b6df28a27c7cb45f9f88711eedc425fd  ./src/acc_core.h
+d41d8cd98f00b204e9800998ecf8427e  ./src/.Rhistory
+de410abbf207d83257c0943d863df0c1  ./src/Moran_I.h
 b073b26c3e3fbc7b7ffaef76d02cb2fd  ./src/scf.c
+c858889ed33da3b239d86f271a51f82d  ./src/Moran_I.c
 f8b079db09f69017de1a4d99b1718cd9  ./src/geodesics.c
 7b335fb3ffce453fe2ff9cefbaa2bb76  ./src/geodesics.h
 cab7565fe745ee89be68699844b772a4  ./src/acc_core.c

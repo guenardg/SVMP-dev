@@ -40,6 +40,7 @@ extern void dist_Euclid(double*, double*, int*, int*, int*, double*, int*);
 extern void mat_center(double*, int*, int*, double*, double*, double*, int*);
 extern void get_center(double*, int*, int*, double*, double*, double*, int*);
 extern void mat_recenter(double*, int*, int*, double*, double*, double*, int*);
+extern void moran(double*, double*, int*, double*, int*, int*, int*, double*);
 
 static const R_CMethodDef CEntries[] = {
   {"dist_geo_hvs",  (DL_FUNC) &dist_geo_hvs,  6},
@@ -53,6 +54,7 @@ static const R_CMethodDef CEntries[] = {
   {"mat_center",    (DL_FUNC) &mat_center,    7},
   {"get_center",    (DL_FUNC) &get_center,    7},
   {"mat_recenter",  (DL_FUNC) &mat_recenter,  7},
+  {"moran",         (DL_FUNC) &moran,         8},
   {NULL,            NULL,                     0}
 };
 
