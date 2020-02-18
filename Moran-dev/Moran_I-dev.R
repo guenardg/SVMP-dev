@@ -1,13 +1,14 @@
-##
 ## rm(list=ls())
 ##
-compile <- function() {
-  try(dyn.unload("src/Moran_I.so"),silent=TRUE)
-  system("R CMD SHLIB src/Moran_I.c")
-  dyn.load("src/Moran_I.so")
-  source("R/Moran_I.R")
-}
-compile()
+## compile <- function() {
+##   try(dyn.unload("../SVMP/src/Moran_I.so"),silent=TRUE)
+##   system("R CMD SHLIB ../SVMP/src/Moran_I.c")
+##   dyn.load("../SVMP/src/Moran_I.so")
+##   source("../SVMP/R/Moran_I.R")
+## }
+## compile()
+##
+library(SVMP)
 ##
 x <- c(9,8,7,8,1,1,2,4,1,4,7,8,9,7,3,4,4,5,6,7)
 plot(x,type="l")
@@ -116,10 +117,3 @@ typeI <- parSapplyLB(
 mean(typeI<0.05)
 stopCluster(cl)
 ##
-
-
-
-
-
-
-

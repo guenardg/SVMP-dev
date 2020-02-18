@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Distance weighting functions
 
-The the present study is concerned with the development of a spatial modelling
+The present study is concerned with the development of a spatial modelling
 framework. In a nutshell, its consists in:
 
 1. finding a function of the distance that is suitable to represent

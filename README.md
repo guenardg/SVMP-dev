@@ -1,20 +1,24 @@
 # R Package SVMP-dev: Spatial Variance Modeling and Prediction -- Development
 
 Documents herein contains the development files and R implementations of a
-framework for spatial variance modeling and prediction. It involves a
-distance-based variance operator that can be used to calculate spatial covariances.
-These covariances are then used as a Laplace operator to obtain en eigensystem whose
-eigenvectors represent a suite of spatial variation patterns (eigenvalues represent
-the sizes of the structures). Besides a Euclidean space, the method can be applied
-to any manifolds, for instances geodesics using great circle distances on spheroids
-or ellipsoids, or curves surface using shortest path lengths as distances between
-locations.
+framework for spatial variance modeling and prediction. It involves a set of
+distance-based weighting functions that are used to calculate spatial
+covariances from sets of pairwise distance between locations. These spatial
+covariances operators are then used to obtain an eigensystem whose eigenvectors
+represent a suite of spatial variation patterns (each eigenvalue represents the
+size of the structure represented by its associated eigenvectors).
 
-The R language package called SVMP-dev that is included herein is for research
+The method is flexible. The space can simply be defined in terms of a Euclidean
+space, such as a series (one-dimensional; e.g., a transect) or a cartesian plane
+(two-dimensional; e.g., a plot), or any other relevant manifolds, for instances
+geodesics using great circle distances on spheroids or ellipsoids as a distance
+metric, or curves surface using shortest path lengths as a metric.
+
+The R language package called SVMP that is included here is for research
 purposes and should be expected to change over time. It is an unpublished and
-unrevised work that has been put here for informational purposes only. Therefore,
-it must not be relied upon for application until the method and implementation
-it be duly revised and published.
+unrevised work that has been put here for informational, public commenting, and
+revision purposes. Therefore, it must not be relied upon for application until
+the method and implementation it be duly revised and published.
 
 ## Authored by
 
