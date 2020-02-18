@@ -7,7 +7,7 @@ Title: Development of Spatial Variance Estimators for Modeling and Prediction
 Author: Guillaume Guenard
 Maintainer: Guillaume Guenard <guillaume.guenard@gmail.com>
 Depends: R (>= 3.0.0)
-Description: Experimental package for developing Laplace estimators of spatial covariance for modeling and predicting purposes.
+Description: Experimental package for developing spatial covariance estimators for modeling and predicting purposes.
 License: GPL-3
 LazyLoad: yes
 NeedsCompilation: yes
