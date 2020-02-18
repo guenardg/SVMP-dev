@@ -1,6 +1,9 @@
+## **************************************************************************
 ##
 ##    (c) 2020 Guillaume Guénard
 ##        Université de Montréal, Montreal, Quebec, Canada
+##
+##    **Centering functions**
 ##
 ##    This file is part of SVMP
 ##
@@ -19,26 +22,55 @@
 ##
 ##    R source code file
 ##
-### I was thinking about a new implementation with internal recycling of the
-### parameters but I postponed that implementation to work on more pressing
-### issues.
+## **************************************************************************
 ##
-## sp.cov2 <- function(d,
-##                     type = c("spherical","exponential","power",
-##                              "hyperbolic","superelliptic"),
-##                     alpha = 1, beta = 1) {
-##     storage.mode(d) <- "double"
-##     type <- substr(match.arg(type),1L,5L)
-##     storage.mode(alpha) <- "double"
-##     storage.mode(beta) <- "double"
-##     n <- c(length(d),length(alpha),length(beta))
-##     out <- .C(sprintf("scf2_%s",type),d,alpha,beta,
-##               n,any(n[2L:3L]>1L),double(n),NAOK=TRUE)[[6L]]
-##     dim(out) <- dim(d)
-##     return(out)
-## }
-##
-##
+#' Matrix Centering and Re-centering Functions
+#'
+#' The function allows one to calculate, in a single step, column means, row
+#' means, and the overall mean (\code{center} and \code{get.center}) of a matrix
+#' an return the centered matrix (\code{center}), or center a new matrix on
+#' values calculated previouly (\code{recenter}).
+#' 
+#' @param x A data matrix.
+#' @param row Whether the centering also on the rows.
+#' @param object An object returned by any of the functions listed here.
+#' @param newx A new data matrix.
+#' 
+#' @return A matrix with dimensions equal to \code{x} (\code{center} or
+#' \code{get.center}) or \code{newx} (\code{recenter}) and column means
+#' (optionally, row means and the overall mean) stored as (an) attribute(s).
+#' 
+#' @details Function \code{center} calculates the column means (optionally, the
+#' row means and overall mean) of a data matrix and returns the latter with its
+#' columns centered on means of 0 (optionally, with both its columns and rows
+#' centered on means of 0). Function \code{get.center} proceeds similarly as
+#' \code{center}, but returns the matrix unchanged. Function \code{recenter}
+#' takes column means (optionally, row means and an overall mean) from an object
+#' returned by \code{center} or \code{get.center} and centers the columns
+#' (optionally the columns and rows) of a new matrix on these values.
+#' 
+#' The functions are generally intended to be used internally but are made
+#' available to the user willing to experiment with new ideas. They are based
+#' on C language implementations that can also be used internally in C language
+#' computer code.
+#' 
+#' @author Guillaume Guénard \email{guillaume.guenard@umontreal.ca}
+#' 
+#' @seealso The \code{\link{dist}-class} and associated methods.
+#' 
+#' @references
+#' [To be included...]
+#' 
+#' @examples
+#' ##
+#' ### First example
+#' ##
+#' ## [Examples here...]
+#' 
+#' @useDynLib SVMP, .registration = TRUE
+#' 
+#'
+#' @export
 center <- function(x, row = FALSE) {
     if(!is.matrix(x))
         stop("'x' must be a matrix!")
@@ -57,9 +89,11 @@ center <- function(x, row = FALSE) {
         out <- res[[1L]]
         attr(out,"colMeans") <- res[[5L]]
     }
+    dim(out) <- dim
     return(out)
 }
 ##
+#' @export
 get.center <- function(x, row = FALSE) {
     if(!is.matrix(x))
         stop("'x' must be a matrix!")
@@ -78,9 +112,11 @@ get.center <- function(x, row = FALSE) {
         out <- res[[1L]]
         attr(out,"colMeans") <- res[[5L]]
     }
+    dim(out) <- dim
     return(out)
 }
 ##
+#' @export
 recenter <- function(object, newx, row) {
     if(!is.matrix(newx))
         stop("'x' must be a matrix!")
@@ -105,6 +141,6 @@ recenter <- function(object, newx, row) {
         out <- res[[1L]]
         attr(out,"colMeans") <- res[[5L]]
     }
+    dim(out) <- dim
     return(out)
 }
-##

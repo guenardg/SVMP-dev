@@ -2,6 +2,9 @@
 
 export(EuclidAB)
 export(MoranI)
+export(center)
 export(geodesics)
+export(get.center)
+export(recenter)
 export(sp.cov)
 useDynLib(SVMP, .registration = TRUE)

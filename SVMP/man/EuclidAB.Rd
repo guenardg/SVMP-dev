@@ -19,7 +19,7 @@ An matrix with as many rows as \code{a} and as many columns as there
 are rows in \code{b}.
 }
 \description{
-Function \code{EuclidAB} calculates the Enclidean distance between two sets
+Function \code{EuclidAB} calculates the Euclidean distance between two sets
 of points A and B.
 }
 \details{
@@ -33,7 +33,7 @@ and \code{b} and output a rectangular Euclidean distance matrix.
 }
 \examples{
 ##
-### First example: locations spread throughout the world
+### First example
 ##
 ## [Examples here...]
 

@@ -26,7 +26,7 @@
 ##
 #' Calculation of the Euclidean Distance Among Two Sets of Points
 #' 
-#' Function \code{EuclidAB} calculates the Enclidean distance between two sets
+#' Function \code{EuclidAB} calculates the Euclidean distance between two sets
 #' of points A and B.
 #' 
 #' @param a First matrix of cartesian coordinates.
@@ -54,7 +54,7 @@
 #' 
 #' @examples
 #' ##
-#' ### First example: locations spread throughout the world
+#' ### First example
 #' ##
 #' ## [Examples here...]
 #' 
