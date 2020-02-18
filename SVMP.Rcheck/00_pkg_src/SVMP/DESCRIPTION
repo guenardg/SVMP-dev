@@ -1,0 +1,16 @@
+Package: SVMP
+Type: Package
+Version: 0.1-1
+Date: 2020-02-14
+Encoding: UTF-8
+Title: Development of Spatial Variance Estimators for Modeling and
+        Prediction
+Author: Guillaume Guenard
+Maintainer: Guillaume Guenard <guillaume.guenard@gmail.com>
+Depends: R (>= 3.0.0)
+Description: Experimental package for developing Laplace estimators of spatial covariance for modeling and predicting purposes.
+License: GPL-3
+LazyLoad: yes
+NeedsCompilation: yes
+RoxygenNote: 6.1.1
+Packaged: 2020-02-18 13:44:21 UTC; guenardg

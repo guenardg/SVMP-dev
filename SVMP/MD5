@@ -1,9 +1,12 @@
 4ce9ccacb472ad240f9c37a29c77e1fd  ./R/sp.cov.R
 e87eeaae2168962c474e19db347d23eb  ./R/EuclidAB.R
+d41d8cd98f00b204e9800998ecf8427e  ./R/.Rhistory
+e5dd60f1cacab0c0b4bf6ea5de6bccc1  ./R/Moran_I.R
 e884a62e0d051a967568416e7af5cfe6  ./R/geodesics.R
 486599d104ee47b49f41acc6e3327d95  ./DESCRIPTION
-5e7766482b99a24648adb1436e34e54e  ./NAMESPACE
+d7f0bf6ebf3dddb126f84d0951fe5451  ./NAMESPACE
 126a0caf67f00ab80e533f7fe643983d  ./man/geodesics.Rd
+717c7bd48b622b6b7c6125ca9b019fa7  ./man/MoranI.Rd
 9c4f6568987a4a5917a1a051a9486ebb  ./man/sp.cov.Rd
 7b93af52cec13460b06cfb59cedeb21a  ./man/EuclidAB.Rd
 74358855430b644b947dcdb25902b8d0  ./src/matrix.c

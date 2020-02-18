@@ -32,6 +32,7 @@
 #' @param x A vector of one-dimensional array.
 #' @param w A matrix of connection weights.
 #' @param test The type of permutation test (default: "two-tail", see details)
+#' @param nperm The number of random permutations of \code{x} (default: 999).
 #' @param saveIp Whether or not to save the permuted coefficient values
 #' (default: FALSE).
 #' 
