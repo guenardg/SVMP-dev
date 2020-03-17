@@ -13,12 +13,12 @@
 ### terms of coherence and phase relationship.
 ##
 ## rm(list=ls())
-N <- 100L
+N <- 1000L
 tol <- .Machine$double.eps^0.5
 ##
 m <- matrix(0+0i,N,N)
-m[cbind(1L:(N-1L),2L:N)] <- complex(mod=1,arg=pi/50)
-m[cbind(2L:N,1L:(N-1L))] <- complex(mod=1,arg=-pi/50)
+m[cbind(1L:(N-1L),2L:N)] <- complex(mod=1,arg=0.5*pi/N)
+m[cbind(2L:N,1L:(N-1L))] <- complex(mod=1,arg=-0.5*pi/N)
 ## m[1L,N] <- complex(mod=1,arg=-pi/50)
 ## m[N,1L] <- complex(mod=1,arg=pi/50)
 mm <- list(row=rowMeans(m),col=colMeans(m),mean=mean(m))
@@ -32,7 +32,7 @@ emc$values <- emc$values[abs(emc$values) >= tol]
 ##
 i <- 1L
 par(mfrow=c(2L,1L))
-while(i <= length(emc$values)) {
+while(i <= 25) {  ## length(emc$values)
   par(mar=c(1,5,4,2))
   plot(emc$values,type="l",xaxt="n",main=sprintf("U[%d]",i))
   points(x=i,y=emc$values[i],pch=21L,bg="black")
@@ -66,13 +66,36 @@ for(a in seq(0, 2*pi, length.out=100L)) {
   par(mar=c(5,5,1,2))
   bi <- complex(mod=1, arg=a)
   yhat <- emc$vectors[,i,drop=FALSE] %*% as.matrix(bi)
-  plot(Re(yhat), type="l", ylim=c(-0.25,0.25))
+  plot(Re(yhat), type="l", ylim=c(-0.05,0.05))
   lines(Im(yhat), col="red", lty=3L)
   Sys.sleep(0.1)
 }
 ##
 par(mfrow=c(1L,1L))
 plot(b)
+##
+### Spiral representation
+rgl::plot3d(NA, xlim=c(0,N-1L), zlim=c(-0.05,0.05), ylim=c(-0.05,0.05),
+            xlab="", zlab="", ylab="", box=FALSE, axes=FALSE)
+rgl::axes3d(edges = c("x--", "y--", "z-+"))
+rgl::title3d(xlab = "Time/Space", ylab = "Im(U[i])")
+rgl::mtext3d("Re(U[i])", "z-+", line = 2)
+rgl::segments3d(x=c(0,N-1L),z=c(0,0),y=c(0,0))
+i <- 1L
+rgl::lines3d(x=0:(N - 1L), z=Re(emc$vectors[,i]), y=Im(emc$vectors[,i]),
+             color="red", lwd=3)
+i <- 2L
+rgl::lines3d(x=0:(N - 1L), z=Re(emc$vectors[,i]), y=Im(emc$vectors[,i]),
+             color="orange", lwd=3)
+i <- 5L
+rgl::lines3d(x=0:(N - 1L), z=Re(emc$vectors[,i]), y=Im(emc$vectors[,i]),
+             color="green", lwd=3)
+i <- 15L
+rgl::lines3d(x=0:(N - 1L), z=Re(emc$vectors[,i]), y=Im(emc$vectors[,i]),
+             color="blue", lwd=3)
+i <- 35L
+rgl::lines3d(x=0:(N - 1L), z=Re(emc$vectors[,i]), y=Im(emc$vectors[,i]),
+             color="purple", lwd=3)
 ##
 ### Works as expected.
 ##
