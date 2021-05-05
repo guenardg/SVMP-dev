@@ -1,0 +1,67 @@
+---
+title: "A Hermitian distance operator to represent directed natural processes"
+author: "Guillaume Guénard"
+date: "01/04/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+## Rationales
+
+Natural processes that operate in time are generally directed as they often
+cannot be reversed. For instances, erosion cannot reverse to generate mountains
+decomposing leaves can't be reversed to life leaves, bush fires can't be reverted
+back to grasslands, and so on. Also, natural processes that operate in space
+may do so in a directed manner. For examples, seeds may disperse more readily
+down dominant winds, river fish may prefer locations some distance downstream of
+tributaries carrying drifting preys on which they can feed, parasite may more
+readily transfer from one area to another than the other way around because of
+spatiotemporal patterns in migrations. It is not particularly hard to imaging
+all sorts of situation where time, space, or space-time interactions would occur
+in directed fashions to influence natural variability. Have a way to describe
+that variability and its directed nature would thus be a valuable asset to
+ecology, evolutionary science, and other disciplines that are concerned with the
+dispersal for organisms or genes in space and time.
+
+## Fourier transforms
+
+Fourier transforms is, perhaps, the most common approach to time series
+analysis. It consists in representing the time series as a set of basis
+functions that are the sum of a cosine and a sine as follows:
+$$\psi_k(x) = \sum_{j=0}^{N-1} x_j e^{-\frac{i2\pi}{N}kj}$$
+where $k=0,1,2,...,N-1$ is the order of the transform and $j$ is the index of
+each of the $N$ discrete observations $x_j$ in the time series ($e$ and $\pi$
+are the usual constants and $i$, the imaginary unit solving the equation
+$i^2 + 1 = 0$). Because the exponential of an imaginary number corresponds to a
+sum of a cosine and a sine ($e^{ia} = \cos(a) + i \sin(a)$), $\psi_k(x)$ can
+also be represented as follows:
+$$\psi_k(x) = \sum_{j=0}^{N-1} x_j \left[\cos\left(\frac{2\pi}{N}kj \right)-i \sin\left(\frac{2\pi}{N}kj \right)\right]$$
+and thus each components of the transform correspond to the combination of a
+cosine whose amplitude corresponds to the real part of $\psi_k(x)$, which we
+will hereafter refer to as $\mathrm{Re}(\psi_k(x))$, and a sine whose amplitude
+corresponds to the imaginary part of $\psi_k(x)$, and which we will hereafter
+refer to as $\mathrm{Im}(\psi_k(x))$. The inverse of that transform is obtained
+by the following:
+$$x_j(\psi) = \frac{1}{N} \sum_{k=0}^{N-1} \psi_k e^{\frac{i2\pi}{N}kj}$$
+which corresponds to superposing each an every cosine and sine combinations as
+follows:
+$$x_j(\psi) = \frac{1}{N} \sum_{k=0}^{N-1} \psi_k \left[\cos\left(\frac{2\pi}{N}kj \right)+i \sin\left(\frac{2\pi}{N}kj \right)\right]$$
+Special considerations arise as $x_j$ are all real values. When $k=0$, the
+cosine is a constant $1$ and the sine a constant $0$ irrespective of $j$, and
+thus $\psi_0$ is the sum of all $x_j$. Moreover, coefficients with $k>0$ are
+conjugate symmetric (i.e.,
+$\psi_l=\mathrm{Conj}(\psi_{N-l})$ for $l=1,2,...,N-1$), which is expected as
+pairs of end to end coefficients have to cancel out one another's imaginary part
+to yield real numbers.
+
+Fourier transforms are applicable to time series analysis, where time steps are
+homegeneous in duration. They cannot be used for data set resulting from
+sampling a phenomenon at irregular time intervals. Fourier transforms are
+applicable to two-dimensional data sets (i.e., regularly-sampled grids), but
+
+

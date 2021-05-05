@@ -155,7 +155,7 @@ geodesics <- function(x, y, method=c("haversine","Vincenty"),
   if(missing(y)) {
     attr(out,"class") <- "dist"
     attr(out,"Size") <- N[1L]
-    attr(out,"Labels") <- dimnames(x)[1L]
+    attr(out,"Labels") <- dimnames(x)[[1L]]
     attr(out,"Diag") <- FALSE
     attr(out,"Upper") <- FALSE
     attr(out,"Method") <- sprintf("geodesic:%s",method)

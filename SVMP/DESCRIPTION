@@ -11,4 +11,4 @@ Description: Experimental package for developing spatial covariance estimators f
 License: GPL-3
 LazyLoad: yes
 NeedsCompilation: yes
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1

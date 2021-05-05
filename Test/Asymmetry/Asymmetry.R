@@ -13,7 +13,7 @@
 ### terms of coherence and phase relationship.
 ##
 ## rm(list=ls())
-N <- 1000L
+N <- 100L
 tol <- .Machine$double.eps^0.5
 ##
 m <- matrix(0+0i,N,N)
@@ -25,14 +25,14 @@ mm <- list(row=rowMeans(m),col=colMeans(m),mean=mean(m))
 ##
 mc <- t(t(m) - mm$col) - mm$row + mm$mean
 ## rowMeans(mc) ## colMeans(mc) ## mean(mc)
-emc <- eigen(mc)
+emc <- eigen(mc, symmetric = TRUE)
 emc$vectors <- emc$vectors[,abs(emc$values) >= tol]
 emc$values <- emc$values[abs(emc$values) >= tol]
 ## round(t(Conj(emc$vectors)) %*% emc$vectors,3)
 ##
 i <- 1L
 par(mfrow=c(2L,1L))
-while(i <= 25) {  ## length(emc$values)
+while(i <= 9) {  ## length(emc$values)
   par(mar=c(1,5,4,2))
   plot(emc$values,type="l",xaxt="n",main=sprintf("U[%d]",i))
   points(x=i,y=emc$values[i],pch=21L,bg="black")
@@ -51,24 +51,27 @@ y <- sin(3.1*pi*(0:(N - 1L))/N) + sin(3.3*pi*(0:(N - 1L))/N) +
   rnorm(N,0,0.1)
 b <- solve(t(Conj(U))%*%U) %*% t(Conj(U)) %*% y
 ##
-par(mfrow=c(2L,1L), par(mar=c(4,5,2,2)))
-plot(y, type="l", xlab="Location", ylab="Response")
+par(mfrow=c(3L,1L), par(mar=c(4,5,2,2)))
+plot(y, type="l", xlab="Location", ylab="Response", las=1L)
+par(mar=c(4,5,1,2))
+plot(Mod(b[-1L]), type="l", xlab="Index", ylab="Power", las=1L)
 par(mar=c(4.5,5,1,2))
-plot(Mod(b[-1L]), type="l", xlab="Index", ylab="Power")
+plot(180*Arg(b[-1L])/pi, ylim=c(-180,180), type="l", xlab="Index", ylab="Phase",
+     las=1L)
 dev.copy2eps(file="./Image/Signal_power.eps")
 ##
-i <- 1L
+i <- 5L
 par(mfrow=c(2L,1L))
 for(a in seq(0, 2*pi, length.out=100L)) {
   par(mar=c(1,5,4,2))
-  plot(emc$values, type="l", xaxt="n", main=sprintf("U[%d]",i))
+  plot(emc$values, type="l", xaxt="n", main=sprintf("U[%d]",i), las=1L)
   points(x=i,y=emc$values[i], pch=21L, bg="black")
   par(mar=c(5,5,1,2))
   bi <- complex(mod=1, arg=a)
   yhat <- emc$vectors[,i,drop=FALSE] %*% as.matrix(bi)
-  plot(Re(yhat), type="l", ylim=c(-0.05,0.05))
+  plot(Re(yhat), type="l", ylim=c(-0.15,0.15), las=1L)
   lines(Im(yhat), col="red", lty=3L)
-  Sys.sleep(0.1)
+  Sys.sleep(0.05)
 }
 ##
 par(mfrow=c(1L,1L))

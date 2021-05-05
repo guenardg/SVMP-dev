@@ -24,6 +24,8 @@
 ##
 ## **************************************************************************
 ##
+#' @name centering
+#' 
 #' Matrix Centering and Re-centering Functions
 #'
 #' The function allows one to calculate, in a single step, column means, row
@@ -62,14 +64,13 @@
 #' [To be included...]
 #' 
 #' @examples
-#' ##
-#' ### First example
-#' ##
-#' ## [Examples here...]
+#' [Examples here...]
 #' 
 #' @useDynLib SVMP, .registration = TRUE
 #' 
-#'
+NULL
+
+#' @rdname centering
 #' @export
 center <- function(x, row = FALSE) {
     if(!is.matrix(x))
@@ -92,7 +93,8 @@ center <- function(x, row = FALSE) {
     dim(out) <- dim
     return(out)
 }
-##
+
+#' @rdname centering
 #' @export
 get.center <- function(x, row = FALSE) {
     if(!is.matrix(x))
@@ -115,7 +117,8 @@ get.center <- function(x, row = FALSE) {
     dim(out) <- dim
     return(out)
 }
-##
+
+#' @rdname centering
 #' @export
 recenter <- function(object, newx, row) {
     if(!is.matrix(newx))
@@ -144,3 +147,4 @@ recenter <- function(object, newx, row) {
     dim(out) <- dim
     return(out)
 }
+##
