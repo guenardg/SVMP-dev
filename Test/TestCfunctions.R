@@ -321,8 +321,10 @@ plot(y=MEMweight(seq(0,maxd,length.out=1000L),f,10^opt$par[1L],10^opt$par[2L]),
 points(x=EuclidAB(pts,pts),
        y=MEMweight(EuclidAB(pts,pts),f,10^opt$par[1L],10^opt$par[2L]))
 ##
-
-
+seq(0, 1, 0.01) -> x
+plot(y = -0.5*x, x = x, type = "l")
+plot(y = 1 - 0.5*x, x = x, type = "l")
+plot(y = 1 - x, x = x, type = "l")
 
 
 
